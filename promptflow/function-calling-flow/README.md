@@ -1,34 +1,67 @@
 # Use Functions with Chat Models
 
+---
+
 ## 프롬프트 흐름
 <img src="function-calling.png" alt="Function Calling" width="400">
 
-This flow covers how to use the LLM tool chat API in combination with external functions to extend the 
-capabilities of GPT models. 
+This flow explains how to use the LLM chat API in combination with external functions to enhance the capabilities of GPT models.
 
-`functions` is an optional parameter in the <a href='https://platform.openai.com/docs/api-reference/chat/create' target='_blank'>Chat Completion API</a> which can be used to provide function 
-specifications. The purpose of this is to enable models to generate function arguments which adhere to the provided 
-specifications. Note that the API will not actually execute any function calls. It is up to developers to execute 
-function calls using model outputs. 
+---
 
-If the `functions` parameter is provided then by default the model will decide when it is appropriate to use one of the 
-functions. The API can be forced to use a specific function by setting the `function_call` parameter to 
-`{"name": "<insert-function-name>"}`. The API can also be forced to not use any function by setting the `function_call` 
-parameter to `"none"`. If a function is used, the output will contain `"finish_reason": "function_call"` in the 
-response, as well as a `function_call` object that has the name of the function and the generated function arguments. 
-You can refer to <a href='https://github.com/openai/openai-cookbook/blob/main/examples/How_to_call_functions_with_chat_models.ipynb' target='_blank'>openai sample</a> for more details.
+### Function Calling 개념
+<img src="FunctionCallingConcept.png" alt="Function Calling Concept" width="1000">
 
+---
 
-## What you will learn
+### Kakao API 가입방법
 
-In this flow, you will learn how to use functions with LLM chat models and how to compose function role message in prompt template.
+1. **카카오 개발자 페이지 접속**
+   - [https://developers.kakao.com/](https://developers.kakao.com/)에 접속합니다.
+   - 카카오 계정으로 로그인합니다. 계정이 없으면 새로 생성합니다.
 
-## Tools used in this flow
-- LLM tool
-- Python tool
+2. **애플리케이션 생성**
+   - "내 애플리케이션" 메뉴에서 새 애플리케이션을 생성합니다.
+   - 애플리케이션 이름과 정보를 입력한 후 등록합니다.
+
+3. **REST API 키 확인**
+   - 생성된 애플리케이션의 설정 화면에서 "App Keys" 섹션으로 이동합니다.
+   - REST API 키를 복사하여 사용합니다.
+
+<img src="KakaoAPI.png" alt="Kakao API 가입" width="1000">
+
+---
+
+### Function 사용 개요
+
+The `functions` parameter is an optional feature in the <a href='https://platform.openai.com/docs/api-reference/chat/create' target='_blank'>Chat Completion API</a> that allows developers to provide function specifications. This feature enables models to generate function arguments that adhere to the provided specifications. 
+
+- **Execution Note**: The API does not execute the functions; developers must execute them using the model outputs.
+- **Controlling Function Calls**:
+  - To force a specific function: Set `function_call` to `{"name": "<function-name>"}`.
+  - To disable function calls: Set `function_call` to `"none"`.
+- **Output Behavior**: If a function is used, the response includes `"finish_reason": "function_call"` and a `function_call` object containing the function name and arguments.
+
+For more details, refer to the <a href='https://github.com/openai/openai-cookbook/blob/main/examples/How_to_call_functions_with_chat_models.ipynb' target='_blank'>OpenAI sample</a>.
+
+---
+
+## What You Will Learn
+
+In this guide, you will learn:
+1. How to integrate functions with LLM chat models.
+2. How to compose function role messages in a prompt template.
+
+---
+
+## Tools Used in This Flow
+- **LLM Tool**: For handling large language models.
+- **Python Tool**: For developing and testing function calls.
+
+---
 
 ## References
-- <a href='https://github.com/openai/openai-cookbook/blob/main/examples/How_to_call_functions_with_chat_models.ipynb' target='_blank'>OpenAI cookbook example</a>
-- <a href='https://openai.com/blog/function-calling-and-other-api-updates?ref=upstract.com' target='_blank'>OpenAI function calling announcement</a> 
-- <a href='https://platform.openai.com/docs/guides/gpt/function-calling' target='_blank'>OpenAI function calling doc</a>
-- <a href='https://platform.openai.com/docs/api-reference/chat/create' target='_blank'>OpenAI function calling API</a>
+- <a href='https://github.com/openai/openai-cookbook/blob/main/examples/How_to_call_functions_with_chat_models.ipynb' target='_blank'>OpenAI Cookbook Example</a>
+- <a href='https://openai.com/blog/function-calling-and-other-api-updates?ref=upstract.com' target='_blank'>OpenAI Function Calling Announcement</a>
+- <a href='https://platform.openai.com/docs/guides/gpt/function-calling' target='_blank'>OpenAI Function Calling Guide</a>
+- <a href='https://platform.openai.com/docs/api-reference/chat/create' target='_blank'>OpenAI Function Calling API</a>
