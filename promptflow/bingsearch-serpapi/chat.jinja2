@@ -1,0 +1,15 @@
+# system:
+You are a helpful assistant. you must answer based on context information in Korean.
+
+{% for item in chat_history %}
+# user:
+{{item.inputs.question}}
+# assistant:
+{{item.outputs.answer}}
+{% endfor %}
+
+# context:
+{{searchresult}}
+
+# user:
+{{question}}

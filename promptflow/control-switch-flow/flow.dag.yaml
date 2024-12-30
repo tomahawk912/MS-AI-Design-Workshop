@@ -1,0 +1,81 @@
+id: template_standard_flow
+name: Template Standard Flow
+inputs:
+  query:
+    type: string
+    is_chat_input: false
+outputs:
+  answer:
+    type: string
+    reference: ${generate_reponse.output}
+nodes:
+- name: class_check
+  type: python
+  source:
+    type: code
+    path: echo.py
+  inputs:
+    llm_result: ${classify_with_llm.output}
+  use_variants: false
+- name: classify_with_llm
+  type: llm
+  source:
+    type: code
+    path: joke.jinja2
+  inputs:
+    deployment_name: gpt-4o
+    temperature: 0.7
+    top_p: 1
+    max_tokens: 256
+    query: ${inputs.query}
+  provider: AzureOpenAI
+  connection: mygpt4oeastus
+  api: chat
+  module: promptflow.tools.aoai
+  use_variants: false
+- name: order_search
+  type: python
+  source:
+    type: code
+    path: order_search.py
+  inputs:
+    query: ${inputs.query}
+  activate:
+    when: ${class_check.output}
+    is: order_search
+  use_variants: false
+- name: product_info
+  type: python
+  source:
+    type: code
+    path: product_info.py
+  inputs:
+    query: ${inputs.query}
+  activate:
+    when: ${class_check.output}
+    is: product_info
+  use_variants: false
+- name: product_recommendation
+  type: python
+  source:
+    type: code
+    path: product_recommendation.py
+  inputs:
+    query: ${inputs.query}
+  activate:
+    when: ${class_check.output}
+    is: product_recommendation
+  use_variants: false
+- name: generate_reponse
+  type: python
+  source:
+    type: code
+    path: generate_reponse.py
+  inputs:
+    order_search: ${order_search.output}
+    product_info: ${product_info.output}
+    product_recommendation: ${product_recommendation.output}
+  use_variants: false
+node_variants: {}
+environment:
+  python_requirements_txt: requirements.txt
