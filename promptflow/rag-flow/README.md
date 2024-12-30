@@ -1,6 +1,6 @@
 # Bring your own Data Chat QnA
 
-## 프롬프르 흐름
+## 프롬프트 흐름
 <img src="rag-flow.png" alt="Function Calling" width="500">
 
 

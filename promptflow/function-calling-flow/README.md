@@ -1,6 +1,6 @@
 # Use Functions with Chat Models
 
-## 프롬프르 흐름
+## 프롬프트 흐름
 <img src="function-calling.png" alt="Function Calling" width="400">
 
 This flow covers how to use the LLM tool chat API in combination with external functions to extend the 
