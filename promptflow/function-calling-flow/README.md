@@ -27,8 +27,10 @@ This flow explains how to use the LLM chat API in combination with external func
 3. **REST API 키 확인**
    - 생성된 애플리케이션의 설정 화면에서 "App Keys" 섹션으로 이동합니다.
    - REST API 키를 복사하여 사용합니다.
+   - 앱권한신청메뉴 : 카카오맵 권한 확인, "신청필요"로 조회되면 "활성화"로 변경
 
-<img src="KakaoAPI.png" alt="Kakao API 가입" width="1000">
+<img src="KakaoAPI.png" alt="Kakao API 가입" width="1000"><br>
+<img src="KakaoAPI2.png" alt="Kakao API 가입" width="1000">
 
 ---
 
