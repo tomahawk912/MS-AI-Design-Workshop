@@ -1,0 +1,2 @@
+azure-ai-documentintelligence==1.0.0b3
+azure-mgmt-core==1.4.0

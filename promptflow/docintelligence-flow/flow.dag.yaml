@@ -1,0 +1,22 @@
+id: template_standard_flow
+name: Template Standard Flow
+inputs:
+  receipt:
+    type: image
+    is_chat_input: false
+outputs:
+  answer:
+    type: string
+    reference: ${document_intelligence_node.output}
+nodes:
+- name: document_intelligence_node
+  type: python
+  source:
+    type: code
+    path: document_intelligence_node.py
+  inputs:
+    input1: ${inputs.receipt}
+  use_variants: false
+node_variants: {}
+environment:
+  python_requirements_txt: requirements.txt
