@@ -1,0 +1,61 @@
+id: template_chat_flow
+name: Template Chat Flow
+inputs:
+  chat_history:
+    type: list
+    is_chat_input: false
+    is_chat_history: true
+  question:
+    type: string
+    is_chat_input: true
+outputs:
+  answer:
+    type: string
+    reference: ${generate_full_sentence_answer.output}
+    is_chat_output: true
+nodes:
+- name: generate_pandas_code
+  type: llm
+  source:
+    type: code
+    path: chat.jinja2
+  inputs:
+    deployment_name: gpt-4o
+    temperature: 0.7
+    top_p: 1
+    max_tokens: 256
+    question: ${inputs.question}
+  provider: AzureOpenAI
+  connection: mygpt4oeastus
+  api: chat
+  module: promptflow.tools.aoai
+  use_variants: false
+- name: run_analysis
+  type: python
+  source:
+    type: code
+    path: run_analysis.py
+  inputs:
+    code_block_to_run: ${generate_pandas_code.output}
+  use_variants: false
+- name: generate_full_sentence_answer
+  type: llm
+  source:
+    type: code
+    path: generate_full_sentence_answer.jinja2
+  inputs:
+    deployment_name: gpt-4o-mini
+    temperature: 1
+    top_p: 1
+    response_format:
+      type: text
+    number: ${run_analysis.output}
+    question: ${inputs.question}
+  provider: AzureOpenAI
+  connection: mygpt4oeastus
+  api: chat
+  module: promptflow.tools.aoai
+  use_variants: false
+node_variants: {}
+environment:
+  python_requirements_txt: requirements.txt
