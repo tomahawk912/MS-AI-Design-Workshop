@@ -1,0 +1,78 @@
+id: template_chat_flow
+name: Template Chat Flow
+inputs:
+  chat_history:
+    type: list
+    is_chat_input: false
+    is_chat_history: true
+  question:
+    type: string
+    is_chat_input: true
+outputs:
+  answer:
+    type: string
+    reference: ${generate_result.output}
+    is_chat_output: true
+nodes:
+- name: text_analysis
+  type: python
+  source:
+    type: package
+    tool: promptflow.tools.azure_content_safety.analyze_text
+  inputs:
+    connection: democontentssafety
+    hate_category: medium_sensitivity
+    self_harm_category: high_sensitivity
+    sexual_category: medium_sensitivity
+    text: ${inputs.question}
+    violence_category: medium_sensitivity
+  use_variants: false
+- name: take_action
+  type: python
+  source:
+    type: code
+    path: take_action.py
+  inputs:
+    input: ${text_analysis.output}
+  use_variants: false
+- name: llm_result
+  type: llm
+  source:
+    type: code
+    path: llm_result.jinja2
+  inputs:
+    deployment_name: gpt-4o
+    temperature: 0.7
+    top_p: 1
+    question: ${inputs.question}
+  provider: AzureOpenAI
+  connection: mygpt4oeastus
+  api: chat
+  module: promptflow.tools.aoai
+  activate:
+    when: ${take_action.output}
+    is: true
+  use_variants: false
+- name: filtering_result
+  type: python
+  source:
+    type: code
+    path: filtering_result.py
+  inputs:
+    question: ${inputs.question}
+  activate:
+    when: ${take_action.output}
+    is: false
+  use_variants: false
+- name: generate_result
+  type: python
+  source:
+    type: code
+    path: generate_result.py
+  inputs:
+    default_result: ${filtering_result.output}
+    llm_result: ${llm_result.output}
+  use_variants: false
+node_variants: {}
+environment:
+  python_requirements_txt: requirements.txt
