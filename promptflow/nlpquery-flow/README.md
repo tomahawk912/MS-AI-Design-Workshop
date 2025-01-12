@@ -11,3 +11,4 @@
 - genrate_pandas 노드 : chat.jinja2 템프릿 복사
 - run_analysis.py 노드 : 코드 복사
 - generate_full_sentence_answer 노드 : jinja2 템플릿 프롬프트 복사
+- 테스트데이터 : petstoresalesdata.csv (Blob Storage에 업로드 용)
